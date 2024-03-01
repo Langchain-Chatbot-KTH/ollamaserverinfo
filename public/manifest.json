@@ -19,6 +19,7 @@
     }
   ],
   "start_url": ".",
+  "port": 3001,
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"

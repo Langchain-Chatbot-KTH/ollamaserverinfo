@@ -12,6 +12,8 @@ function App() {
     const [accessGranted, setAccessGranted] = useState(false); // State for access control
     const [secretInput, setSecretInput] = useState(''); // State for secret code input
 
+
+
     useEffect(() => {
         setLoading(true);
         axios.get('http://localhost:9090/OllamaServerInfo/listModels')
