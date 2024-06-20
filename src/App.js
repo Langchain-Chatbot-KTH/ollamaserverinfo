@@ -15,30 +15,30 @@ function App() {
 
 
     useEffect(() => {
-        setLoading(true);
-        axios.get('http://localhost:9090/OllamaServerInfo/listModels')
-            .then(response => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://proxyembedding.vm-app.cloud.cbh.kth.se/OllamaServerInfo/listModels');
                 setOllamaModels(response.data);
                 setLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching Ollama models:', error);
                 setLoading(false);
-            });
+            }
+        };
 
-        // Check if the user has been authenticated before
-        const isAuthenticated = localStorage.getItem('authenticated');
-        if (isAuthenticated === 'true') {
-            setAccessGranted(true);
-        }
+        fetchData();
+
+        const interval = setInterval(fetchData, 5000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const removeModel = (modelName) => {
         setLoading(true);
-        axios.get(`http://localhost:9090/OllamaServerInfo/removeModel?model=${modelName}`)
+        axios.get(`https://proxyembedding.vm-app.cloud.cbh.kth.se/removeModel?model=${modelName}`)
             .then(response => {
                 setMessage(response.data);
-                axios.get('http://localhost:9090/OllamaServerInfo/listModels')
+                axios.get('https://proxyembedding.vm-app.cloud.cbh.kth.se/OllamaServerInfo/listModels')
                     .then(response => {
                         setOllamaModels(response.data);
                         setLoading(false);
@@ -57,9 +57,8 @@ function App() {
 
     const performAction = (action) => {
         if (action === 'Pull') {
-            setLoading(true);
             console.log(actionInput);
-            axios.post('http://localhost:9090/OllamaServerInfo/pullModel', null, {
+            axios.post('https://proxyembedding.vm-app.cloud.cbh.kth.se/OllamaServerInfo/pullModel', null, {
                 params: {
                     modelName : actionInput
                 }
